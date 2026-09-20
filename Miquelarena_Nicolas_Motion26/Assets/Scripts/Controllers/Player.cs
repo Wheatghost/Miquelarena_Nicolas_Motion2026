@@ -22,6 +22,9 @@ public class Player : MonoBehaviour
     //Task 2
     public Vector2 distance; //distance from the player to the corner
 
+    //Task 3
+    public float ratio = 1f;
+
     void Update()
     {
         pos = playerPos.position;//for some reason this needs to be done as a seperate step or else it gets mad at me
@@ -43,7 +46,7 @@ public class Player : MonoBehaviour
 
         if (Keyboard.current.wKey.wasPressedThisFrame)
         {
-            Warp(enemyTransform, playerPos);
+            Warp(enemyTransform, playerPos, ratio);
         }
 
     }
@@ -88,8 +91,21 @@ public class Player : MonoBehaviour
     }
 
 
-            void Warp(Transform target, Transform pos)
-            {
-                //Take the target's position, find the distance and direction, translate the player towards those coordinates 
-            }
+    void Warp(Transform target, Transform pos, float ratio)
+    {
+        //Take the target's position, find the distance and direction, translate the player towards those coordinates 
+        Vector2 warp = target.position - pos.position;
+        if (ratio < 0)
+        {
+            ratio = 0;
+        }
+        else if (ratio > 1)
+        {
+            ratio = 1;
+        }
+        if (ratio != 0)
+        {
+            pos.position = ((Vector2)pos.position + warp) * ratio;
+        }
+    }
 }
