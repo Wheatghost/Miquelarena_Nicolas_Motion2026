@@ -25,6 +25,10 @@ public class Player : MonoBehaviour
     //Task 3
     public float ratio = 1f;
 
+    //Task 4
+    public Vector2 maxRange; //radar range
+    public Vector2 distanceToRock;
+
     void Update()
     {
         pos = playerPos.position;//for some reason this needs to be done as a seperate step or else it gets mad at me
@@ -46,9 +50,20 @@ public class Player : MonoBehaviour
 
         if (Keyboard.current.wKey.wasPressedThisFrame)
         {
-            Warp(enemyTransform, playerPos, ratio);
+            Warp(enemyTransform, playerPos, ratio);//Warps player
         }
 
+        //get the player position relative to the asteroid field
+        //distanceToRock = asteroidTransforms.position - playerPos.position;
+        for (int i = 0; i < 20; i++)
+        {
+            distanceToRock = asteroidTransforms[i].position - playerPos.position;
+            //check if the player is within range of an asteroid
+            if (distanceToRock.x < maxRange.x || distanceToRock.y < maxRange.y)
+            {
+                Ping(asteroidTransforms[i], playerPos);
+            }
+        }
     }
 
     void SpawnBombAtOffset(Transform bombOffset, float amount)
@@ -60,7 +75,6 @@ public class Player : MonoBehaviour
             bombOffset.position = (Vector2)bombOffset.position + offset;
         }
     }
-
     void SpawnCornerBomb(Transform position, Vector2 distance)
     {
         int corner = Random.Range(0, 4); //randomly select a corner, each time the method is called
@@ -89,8 +103,6 @@ public class Player : MonoBehaviour
             Instantiate(bombPrefab, position);
         }
     }
-
-
     void Warp(Transform target, Transform pos, float ratio)
     {
         //Take the target's position, find the distance and direction, translate the player towards those coordinates 
@@ -107,5 +119,12 @@ public class Player : MonoBehaviour
         {
             pos.position = ((Vector2)pos.position + warp) * ratio;
         }
+    }
+    
+    void Ping(Transform asteroidPos, Transform shipPos)//draws a normalized green line towards the nearest asteroid
+    {
+        Vector2 direction = asteroidPos.position - shipPos.position;
+        Vector2 normalizedDirection = direction.normalized*2.5f;
+        Debug.DrawLine(shipPos.position, normalizedDirection, Color.green, 0.2f);
     }
 }
