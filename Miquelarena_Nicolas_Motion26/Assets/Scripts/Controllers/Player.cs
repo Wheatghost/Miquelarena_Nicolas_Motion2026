@@ -6,6 +6,14 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    //Week 3
+    public Vector3 currentVelocity = Vector3.right;
+    public float accelerationTime;
+    public float deccelerationTime;
+    public float decceleration;
+    public float currentAcceleration;
+    public float maxSpeed;
+
     public List<Transform> asteroidTransforms;
     public Transform enemyTransform;
     public GameObject bombPrefab;
@@ -28,6 +36,12 @@ public class Player : MonoBehaviour
     //Task 4
     public Vector2 maxRange; //radar range
     public Vector2 distanceToRock;
+
+    void Start()
+    {
+        currentAcceleration = maxSpeed / accelerationTime;
+        decceleration = maxSpeed / deccelerationTime;
+    }
 
     void Update()
     {
@@ -55,7 +69,7 @@ public class Player : MonoBehaviour
 
         //get the player position relative to the asteroid field
         //distanceToRock = asteroidTransforms.position - playerPos.position;
-        for (int i = 0; i < 20; i++)
+        /*for (int i = 0; i < 20; i++)
         {
             distanceToRock = asteroidTransforms[i].position - playerPos.position;
             //check if the player is within range of an asteroid
@@ -63,14 +77,36 @@ public class Player : MonoBehaviour
             {
                 Ping(asteroidTransforms[i], playerPos);
             }
+        }*/
+        //Movement
+
+        /*PlayerMovement(speed);
+        if (Keyboard.current.wKey.wasPressedThisFrame)
+        {
+            speed++;
         }
+        else if (Keyboard.current.aKey.wasPressedThisFrame)
+        {
+            speed--;
+        }
+        else if (Keyboard.current.sKey.wasPressedThisFrame)
+        {
+            speed--;
+        }
+        else if (Keyboard.current.dKey.wasPressedThisFrame)
+        {
+            speed++;
+        }
+        */
+        PlayerMovement();
+
     }
 
     void SpawnBombAtOffset(Transform bombOffset, float amount)
     {
-        Vector2 offset = new Vector2 (0, -0.2f);
+        Vector2 offset = new Vector2(0, -0.2f);
         //instantiate bombprefab at vector3 inOffset
-        for (int i = 0; i<amount; i++) {
+        for (int i = 0; i < amount; i++) {
             Instantiate(bombPrefab, bombOffset);
             bombOffset.position = (Vector2)bombOffset.position + offset;
         }
@@ -120,11 +156,63 @@ public class Player : MonoBehaviour
             pos.position = ((Vector2)pos.position + warp) * ratio;
         }
     }
-    
+
     void Ping(Transform asteroidPos, Transform shipPos)//draws a normalized green line towards the nearest asteroid
     {
         Vector2 direction = asteroidPos.position - shipPos.position;
-        Vector2 normalizedDirection = direction.normalized*2.5f;
+        Vector2 normalizedDirection = direction.normalized * 2.5f;
         Debug.DrawLine(shipPos.position, normalizedDirection, Color.green, 0.2f);
+    }
+
+    //player movement
+    /*void PlayerMovement(float speed)
+    {
+        if (Keyboard.current.wKey.wasPressedThisFrame)
+        {
+            transform.position = (Vector2)transform.position + new Vector2(0, speed);
+        }
+        else if (Keyboard.current.aKey.wasPressedThisFrame)
+        {
+            transform.position = (Vector2)transform.position + new Vector2(speed, 0);
+        }
+        else if (Keyboard.current.sKey.wasPressedThisFrame)
+        {
+            transform.position = (Vector2)transform.position + new Vector2(0, speed);
+        }
+        else if (Keyboard.current.dKey.wasPressedThisFrame)
+        {
+            transform.position = (Vector2)transform.position + new Vector2(speed, 0);
+        }
+    }*/
+    void PlayerMovement()
+    {
+        Vector3 direction = Vector3.zero;
+
+        if (Keyboard.current.leftArrowKey.isPressed)
+        {
+            direction += Vector3.left;
+        }
+        if (Keyboard.current.rightArrowKey.isPressed)
+        {
+            direction += Vector3.right;
+        }
+        if (Keyboard.current.upArrowKey.isPressed)
+        {
+            direction += Vector3.up;
+        }
+        if (Keyboard.current.downArrowKey.isPressed)
+        {
+            direction += Vector3.down;
+        }
+
+        currentVelocity += direction.normalized*currentAcceleration * Time.deltaTime;
+
+        if (currentVelocity.magnitude > maxSpeed)
+        {
+            currentVelocity = currentVelocity.normalized * 4;
+        }
+        
+
+        transform.position = transform.position + (currentVelocity * Time.deltaTime);
     }
 }
