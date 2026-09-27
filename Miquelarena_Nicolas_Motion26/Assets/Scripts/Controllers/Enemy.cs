@@ -11,26 +11,26 @@ public class Enemy : MonoBehaviour
     //Task 1
     public Vector3 currentVelocity = Vector3.right;
     public float accelerationTime;
-    public float deccelerationTime;
-    public float decceleration;
     public float currentAcceleration;
     public float maxSpeed;
+    float timer = 0;
 
     void Start()
     {
         currentAcceleration = maxSpeed / accelerationTime;
-        decceleration = currentAcceleration / deccelerationTime;
+        
     }
 
     void Update()
     {
-        float timer = 0;
-        if (timer > 1)
+        
+        if (timer > 0.1)
         {
             EnemyMovement();
             timer = 0;
         }
         timer += Time.deltaTime;
+        
     }
 
     void EnemyMovement()
@@ -56,19 +56,11 @@ public class Enemy : MonoBehaviour
 
         currentVelocity += direction.normalized * currentAcceleration * Time.deltaTime;
 
-        if (Keyboard.current.downArrowKey.isPressed == false && Keyboard.current.upArrowKey.isPressed == false && Keyboard.current.rightArrowKey.isPressed == false && Keyboard.current.leftArrowKey.isPressed == false && currentVelocity.magnitude != 0)
-        {
-            Debug.Log("Deccelerating");
-            currentVelocity += -1 * direction.normalized * decceleration * Time.deltaTime;
-        }
-        //Still Cannot figure this out
-
         if (currentVelocity.magnitude > maxSpeed)
         {
             currentVelocity = currentVelocity.normalized * maxSpeed;
         }
-
-
         transform.position = transform.position + (currentVelocity * Time.deltaTime);
     }
+
 }

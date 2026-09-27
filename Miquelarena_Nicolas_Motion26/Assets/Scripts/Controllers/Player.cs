@@ -207,7 +207,8 @@ public class Player : MonoBehaviour
         if (Keyboard.current.downArrowKey.isPressed == false && Keyboard.current.upArrowKey.isPressed == false && Keyboard.current.rightArrowKey.isPressed == false && Keyboard.current.leftArrowKey.isPressed == false && currentVelocity.magnitude != 0)
         {
             Debug.Log("Deccelerating");
-            currentVelocity += -1*direction.normalized * decceleration * Time.deltaTime;
+            //currentVelocity += -1*direction.normalized * decceleration * Time.deltaTime;
+            currentVelocity -= currentVelocity;
         } 
         //Cannot figure this out
 
