@@ -6,37 +6,34 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    public List<Transform> asteroidTransforms;
+    public Transform enemyTransform;
+    public GameObject bombPrefab;
+    public Transform bombsTransform;
+
+    //Journal 2
+    //Task 1
+    public Transform playerPos; //player position and everything
+    public Vector2 spawnOffset; //offset variable
+    public Vector2 pos;
+    public float numberOfBombs; //number of bombs
+    //Task 2
+    public Vector2 distance; //distance from the player to the corner
+    //Task 3
+    public float ratio = 1f;
+    //Task 4
+    public Vector2 maxRange; //radar range
+    public Vector2 distanceToRock;
+
     //Week 3
+    //Task 1
     public Vector3 currentVelocity = Vector3.right;
     public float accelerationTime;
     public float deccelerationTime;
     public float decceleration;
     public float currentAcceleration;
     public float maxSpeed;
-
-    public List<Transform> asteroidTransforms;
-    public Transform enemyTransform;
-    public GameObject bombPrefab;
-    public Transform bombsTransform;
-
-    //Task 1
-    public Transform playerPos; //player position and everything
-
-    public Vector2 spawnOffset; //offset variable
-    public Vector2 pos;
-
-    public float numberOfBombs; //number of bombs
-
-    //Task 2
-    public Vector2 distance; //distance from the player to the corner
-
-    //Task 3
-    public float ratio = 1f;
-
-    //Task 4
-    public Vector2 maxRange; //radar range
-    public Vector2 distanceToRock;
-
+    
     void Start()
     {
         currentAcceleration = maxSpeed / accelerationTime;
@@ -209,7 +206,7 @@ public class Player : MonoBehaviour
 
         if (currentVelocity.magnitude > maxSpeed)
         {
-            currentVelocity = currentVelocity.normalized * 4;
+            currentVelocity = currentVelocity.normalized * maxSpeed;
         }
         
 
