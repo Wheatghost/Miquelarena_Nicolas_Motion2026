@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         currentAcceleration = maxSpeed / accelerationTime;
-        decceleration = maxSpeed / deccelerationTime;
+        decceleration = currentAcceleration / deccelerationTime;
     }
 
     void Update()
@@ -201,8 +201,15 @@ public class Player : MonoBehaviour
         {
             direction += Vector3.down;
         }
+           
+        currentVelocity += direction.normalized * currentAcceleration * Time.deltaTime;
 
-        currentVelocity += direction.normalized*currentAcceleration * Time.deltaTime;
+        if (Keyboard.current.downArrowKey.isPressed == false && Keyboard.current.upArrowKey.isPressed == false && Keyboard.current.rightArrowKey.isPressed == false && Keyboard.current.leftArrowKey.isPressed == false && currentVelocity.magnitude != 0)
+        {
+            Debug.Log("Deccelerating");
+            currentVelocity += -1*direction.normalized * decceleration * Time.deltaTime;
+        } 
+        //Cannot figure this out
 
         if (currentVelocity.magnitude > maxSpeed)
         {
