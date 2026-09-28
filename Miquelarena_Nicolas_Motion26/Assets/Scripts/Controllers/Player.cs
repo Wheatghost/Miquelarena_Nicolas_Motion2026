@@ -139,34 +139,6 @@ public class Player : MonoBehaviour
             pos.position = ((Vector2)pos.position + warp) * ratio;
         }
     }
-
-    void Ping(Transform asteroidPos, Transform shipPos)//draws a normalized green line towards the nearest asteroid
-    {
-        Vector2 direction = asteroidPos.position - shipPos.position;
-        Vector2 normalizedDirection = direction.normalized * 2.5f;
-        Debug.DrawLine(shipPos.position, normalizedDirection, Color.green, 0.2f);
-    }
-
-    //player movement
-    /*void PlayerMovement(float speed)
-    {
-        if (Keyboard.current.wKey.wasPressedThisFrame)
-        {
-            transform.position = (Vector2)transform.position + new Vector2(0, speed);
-        }
-        else if (Keyboard.current.aKey.wasPressedThisFrame)
-        {
-            transform.position = (Vector2)transform.position + new Vector2(speed, 0);
-        }
-        else if (Keyboard.current.sKey.wasPressedThisFrame)
-        {
-            transform.position = (Vector2)transform.position + new Vector2(0, speed);
-        }
-        else if (Keyboard.current.dKey.wasPressedThisFrame)
-        {
-            transform.position = (Vector2)transform.position + new Vector2(speed, 0);
-        }
-    }*/
     void PlayerMovement()
     {
         Vector3 direction = Vector3.zero;
@@ -209,17 +181,16 @@ public class Player : MonoBehaviour
 
     void Radar(int i)
     {
-        Vector2 lastPos;
+        Vector2 lastPos = (Vector2)transform.position;
         Vector2 currentPos = new Vector2(Mathf.Cos(radarDeg[i]), Mathf.Sin(radarDeg[i]) * radius);
-        if (i == 0)
-           lastPos  = new Vector2(Mathf.Cos(radarDeg[i]), Mathf.Sin(radarDeg[i]) * radius);
-        else
-            lastPos = new Vector2(Mathf.Cos(radarDeg[i-1]), Mathf.Sin(radarDeg[i-1]) * radius);
+        
 
         currentPos = currentPos + (Vector2)transform.position;
         lastPos = lastPos + (Vector2)transform.position;
 
         Debug.DrawLine(lastPos, currentPos , Color.green);
-        
+        lastPos = currentPos;
+        Debug.Log(lastPos);
+        Debug.Log(currentPos);
     }
 }
