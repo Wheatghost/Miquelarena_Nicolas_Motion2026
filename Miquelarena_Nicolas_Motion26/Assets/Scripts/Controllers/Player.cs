@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.UI.Image;
 
 public class Player : MonoBehaviour
 {
@@ -33,11 +34,23 @@ public class Player : MonoBehaviour
     public float decceleration;
     public float currentAcceleration;
     public float maxSpeed;
-    
+
+
+    //Week 4
+    //Player Radar
+    //Use player position, draw a circle around them using radius, offset the circle using the player coordinates, 
+    public List<int> radarDeg;
+    public Vector2 radarOffset;
+    public float radius;
+
     void Start()
     {
         currentAcceleration = maxSpeed / accelerationTime;
         decceleration = currentAcceleration / deccelerationTime;
+        for (int i = 0; i < 10; i++)
+        {
+            radarDeg.Add(36 * i);
+        }
     }
 
     void Update()
@@ -64,39 +77,12 @@ public class Player : MonoBehaviour
             Warp(enemyTransform, playerPos, ratio);//Warps player
         }
 
-        //get the player position relative to the asteroid field
-        //distanceToRock = asteroidTransforms.position - playerPos.position;
-        /*for (int i = 0; i < 20; i++)
-        {
-            distanceToRock = asteroidTransforms[i].position - playerPos.position;
-            //check if the player is within range of an asteroid
-            if (distanceToRock.x < maxRange.x || distanceToRock.y < maxRange.y)
-            {
-                Ping(asteroidTransforms[i], playerPos);
-            }
-        }*/
-        //Movement
-
-        /*PlayerMovement(speed);
-        if (Keyboard.current.wKey.wasPressedThisFrame)
-        {
-            speed++;
-        }
-        else if (Keyboard.current.aKey.wasPressedThisFrame)
-        {
-            speed--;
-        }
-        else if (Keyboard.current.sKey.wasPressedThisFrame)
-        {
-            speed--;
-        }
-        else if (Keyboard.current.dKey.wasPressedThisFrame)
-        {
-            speed++;
-        }
-        */
         PlayerMovement();
-
+        for (int i = 0; i < radarDeg.Count; i++)
+        {
+            Radar(i);
+        }
+                
     }
 
     void SpawnBombAtOffset(Transform bombOffset, float amount)
@@ -219,5 +205,21 @@ public class Player : MonoBehaviour
         
 
         transform.position = transform.position + (currentVelocity * Time.deltaTime);
+    }
+
+    void Radar(int i)
+    {
+        Vector2 lastPos;
+        Vector2 currentPos = new Vector2(Mathf.Cos(radarDeg[i]), Mathf.Sin(radarDeg[i]) * radius);
+        if (i == 0)
+           lastPos  = new Vector2(Mathf.Cos(radarDeg[i]), Mathf.Sin(radarDeg[i]) * radius);
+        else
+            lastPos = new Vector2(Mathf.Cos(radarDeg[i-1]), Mathf.Sin(radarDeg[i-1]) * radius);
+
+        currentPos = currentPos + (Vector2)transform.position;
+        lastPos = lastPos + (Vector2)transform.position;
+
+        Debug.DrawLine(lastPos, currentPos , Color.green);
+        
     }
 }
