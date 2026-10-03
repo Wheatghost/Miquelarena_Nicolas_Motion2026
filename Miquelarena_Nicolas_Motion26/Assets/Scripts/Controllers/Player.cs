@@ -39,6 +39,7 @@ public class Player : MonoBehaviour
     //Week 4
     //Player Radar
     //Use player position, draw a circle around them using radius, offset the circle using the player coordinates, 
+    Vector2 origin = Vector2.zero;
     public List<int> radarDeg;
     public Vector2 radarOffset;
     public float radius;
@@ -47,9 +48,9 @@ public class Player : MonoBehaviour
     {
         currentAcceleration = maxSpeed / accelerationTime;
         decceleration = currentAcceleration / deccelerationTime;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 8; i++)
         {
-            radarDeg.Add(36 * i);
+            radarDeg.Add(45 * i);
         }
     }
 
@@ -80,7 +81,7 @@ public class Player : MonoBehaviour
         PlayerMovement();
         for (int i = 0; i < radarDeg.Count; i++)
         {
-            Radar(i);
+            Radar(radarDeg[i]);
         }
                 
     }
@@ -181,16 +182,9 @@ public class Player : MonoBehaviour
 
     void Radar(int i)
     {
-        Vector2 lastPos = (Vector2)transform.position;
-        Vector2 currentPos = new Vector2(Mathf.Cos(radarDeg[i]), Mathf.Sin(radarDeg[i]) * radius);
-        
-
-        currentPos = currentPos + (Vector2)transform.position;
-        lastPos = lastPos + (Vector2)transform.position;
-
-        Debug.DrawLine(lastPos, currentPos , Color.green);
-        lastPos = currentPos;
-        Debug.Log(lastPos);
-        Debug.Log(currentPos);
+        Vector2 currentPos = new Vector2(Mathf.Cos(i), Mathf.Sin(i))*radius;
+        //currentPos = currentPos + (Vector2)transform.position;
+        Debug.DrawLine(origin, currentPos , Color.green);
+        origin = currentPos;
     }
 }
