@@ -225,5 +225,7 @@ public class Player : MonoBehaviour
     void WarpShield()
     {
         //Generate a ring around the player that prevents damage in some way
+        //Needs a game object that behaves as the shield
+        //Needs to orbit around the player
     }
 }
