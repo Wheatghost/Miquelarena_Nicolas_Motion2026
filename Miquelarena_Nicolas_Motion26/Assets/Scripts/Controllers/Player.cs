@@ -44,6 +44,12 @@ public class Player : MonoBehaviour
     public Vector2 radarOffset;
     public float radius;
 
+    //ProposalTest
+    //check if warp is placed or not
+    public bool warpReady;
+    //Store the coordinates/velocity
+    public Vector2 warpCoords;
+    public Vector2 warpVelocity;
     void Start()
     {
         currentAcceleration = maxSpeed / accelerationTime;
@@ -76,6 +82,20 @@ public class Player : MonoBehaviour
         if (Keyboard.current.wKey.wasPressedThisFrame)
         {
             Warp(enemyTransform, playerPos, ratio);//Warps player
+        }
+
+        if (Keyboard.current.xKey.wasPressedThisFrame)
+        {
+            if (warpReady == false)
+            {
+                PlaceWarp(transform.position, currentVelocity);
+                warpReady = true;
+            }
+            else 
+            {
+                useWarp(warpCoords, warpVelocity);
+                warpReady = false;
+            }
         }
 
         PlayerMovement();
@@ -186,5 +206,24 @@ public class Player : MonoBehaviour
         //currentPos = currentPos + (Vector2)transform.position;
         Debug.DrawLine(origin, currentPos , Color.green);
         origin = currentPos;
+    }
+
+    void PlaceWarp(Vector2 currentPos, Vector2 velocity)
+    {
+        warpCoords = currentPos;
+        warpVelocity = velocity;
+        //place an object that represents the warp stone
+    }
+
+    void useWarp(Vector2 destination, Vector2 exitSpeed)
+    {
+        transform.position = destination;
+        currentVelocity = exitSpeed;
+        //destroy the warp stone after use
+    }
+
+    void WarpShield()
+    {
+        //Generate a ring around the player that prevents damage in some way
     }
 }
