@@ -236,7 +236,7 @@ Transform:
   m_GameObject: {fileID: 636962882}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.84, y: -0.03, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -256,7 +256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Mechanics
   enemyTransform: {fileID: 1615215764}
-  playerPos: {fileID: 217102967}
+  playerPos: {fileID: 636962883}
   pos: {x: 0, y: 0}
   currentVelocity: {x: 0, y: 0, z: 0}
   accelerationTime: 2
@@ -265,6 +265,7 @@ MonoBehaviour:
   currentAcceleration: 0
   maxSpeed: 5
   warpReady: 1
+  warpStone: {fileID: 7969683946929540427, guid: 011cf40e2a31c3642a7dd81e85ce2f8f, type: 3}
   warpCoords: {x: 0, y: 0}
   warpVelocity: {x: 0, y: 0}
   missile: {fileID: 6206232962430986550, guid: 78a8ebfbf8ac34e4494e67baa52e6963, type: 3}

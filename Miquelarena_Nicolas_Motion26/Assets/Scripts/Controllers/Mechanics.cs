@@ -10,6 +10,7 @@ public class Mechanics : MonoBehaviour
     public static Transform target;
     public Transform enemyTransform;
     public Transform playerPos; //player position and everything
+    Vector3 spawnPos;
     public Vector2 pos;
   
     //Movement
@@ -22,7 +23,8 @@ public class Mechanics : MonoBehaviour
 
     //ProposalTest
     //check if warp is placed or not
-    public bool warpReady = true;
+    public bool warpReady = false;
+    public GameObject warpStone;
     //Store the coordinates/velocity
     public Vector2 warpCoords;
     public Vector2 warpVelocity;
@@ -38,6 +40,7 @@ public class Mechanics : MonoBehaviour
 
     void Update()
     {
+        spawnPos = transform.position;
         //returns the current target to the missile
         SendTransform();
 
@@ -91,7 +94,6 @@ public class Mechanics : MonoBehaviour
             //currentVelocity += -1*direction.normalized * decceleration * Time.deltaTime;
             currentVelocity -= currentVelocity;
         }
-        //Cannot figure this out
 
         if (currentVelocity.magnitude > maxSpeed)
         {
@@ -106,13 +108,13 @@ public class Mechanics : MonoBehaviour
         warpCoords = currentPos;
         warpVelocity = velocity;
         //place an object that represents the warp stone
+        Instantiate(warpStone, spawnPos, Quaternion.identity);
     }
 
     void useWarp(Vector2 destination, Vector2 exitSpeed)
     {
         transform.position = destination;
         currentVelocity = exitSpeed;
-        //destroy the warp stone after use
     }
 
     void WarpShield()
@@ -124,7 +126,7 @@ public class Mechanics : MonoBehaviour
 
     void SpawnMissile()
     {
-        Instantiate(missile, playerPos);
+        Instantiate(missile, spawnPos, Quaternion.identity);
     }
 
     public static Transform SendTransform()
